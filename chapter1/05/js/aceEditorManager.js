@@ -36,6 +36,11 @@ function createAceEditor(codeDiv, filePath, fileId)
     tempEditor.setFontSize(playbackData.aceFontSize);
     //sets the mode for the editor based on the file it will display
     setEditorMode(tempEditor, filePath);
+    //make it possible to scroll past the end of the text
+    tempEditor.setOptions({scrollPastEnd: true});
+    //remove the cursor
+    tempEditor.setOptions({highlightActiveLine: false, highlightGutterLine: false});
+    tempEditor.renderer.$cursorLayer.element.style.display = "none";
 
     //adds editor as a key/value pair to the list of editors using fileId as the key
     playbackData.editors[fileId] = tempEditor;
@@ -96,10 +101,6 @@ function addCodeHighlights(commentObject) {
         //add the secondary highlight
         addSecondaryCodeHighlight(fileId, secondaryHighlightStartRow, secondaryHighlightEndRow);
     }
-    //get the editor where the highlight will take place and remove the cursor
-    const editor = playbackData.editors[fileId];
-    editor.setOptions({highlightActiveLine: false, highlightGutterLine: false});
-    editor.renderer.$cursorLayer.element.style.display = "none";
 }
 /*
  * Cretes a group of Ace ranges for primary highlights. It goes through a (possible multi-line) range
